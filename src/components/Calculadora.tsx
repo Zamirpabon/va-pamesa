@@ -1,16 +1,17 @@
 import { useMemo, useState } from 'react'
 import { CAMPOS_COSTO, CATEGORIAS } from '../lib/costos'
 import { calcularResumen } from '../lib/calculations'
-import { agregarCultivo } from '../lib/storage'
-import type { CultivoGuardado } from '../types'
+import type { DatosCultivo } from '../types'
 import { CampoNumero } from './CampoNumero'
 import { Resumen } from './Resumen'
 
 interface Props {
-  onGuardar: (items: CultivoGuardado[]) => void
+  // Guarda el cultivo en la base de datos. Lanza si algo falla.
+  onGuardar: (datos: DatosCultivo) => Promise<unknown>
 }
 
 type Modo = 'detallado' | 'rapido'
+type Estado = 'idle' | 'guardando' | 'ok' | 'error'
 
 const costosIniciales = (): Record<string, number> =>
   Object.fromEntries(CAMPOS_COSTO.map((c) => [c.id, 0]))
@@ -25,7 +26,7 @@ export function Calculadora({ onGuardar }: Props) {
   const [costos, setCostos] = useState<Record<string, number>>(costosIniciales)
   const [modo, setModo] = useState<Modo>('detallado')
   const [costoRapido, setCostoRapido] = useState(0)
-  const [guardado, setGuardado] = useState(false)
+  const [estado, setEstado] = useState<Estado>('idle')
 
   const listaCostos = useMemo(
     () => (modo === 'rapido' ? [costoRapido] : CAMPOS_COSTO.map((c) => costos[c.id] ?? 0)),
@@ -42,28 +43,43 @@ export function Calculadora({ onGuardar }: Props) {
 
   const puedeGuardar = producto.trim() !== '' && kilos > 0
 
-  const guardar = () => {
-    const item: CultivoGuardado = {
-      id: crypto.randomUUID(),
-      fecha: new Date().toISOString(),
+  const guardar = async () => {
+    const datos: DatosCultivo = {
       producto: producto.trim(),
+      area_m2: areaM2,
+      ciclo_semanas: cicloSemanas,
+      unidades,
       kilos,
-      costoTotal: resumen.costoTotal,
-      precioVentaKg,
+      precio_venta_kg: precioVentaKg,
+      costos: modo === 'rapido' ? { total: costoRapido } : costos,
+      costo_total: resumen.costoTotal,
       ingresos: resumen.ingresos,
       utilidad: resumen.utilidad,
+      margen: resumen.margen,
       roi: resumen.roi,
       nivel: resumen.nivel,
     }
-    onGuardar(agregarCultivo(item))
-    setGuardado(true)
+    setEstado('guardando')
+    try {
+      await onGuardar(datos)
+      setEstado('ok')
+    } catch {
+      setEstado('error')
+    }
   }
+
+  const etiquetaBoton =
+    estado === 'guardando'
+      ? 'Guardando…'
+      : estado === 'ok'
+        ? '✓ Guardado en tu registro'
+        : 'Guardar en mi registro'
 
   return (
     <div className="calculadora">
       <form
         className="formulario"
-        onChange={() => setGuardado(false)}
+        onChange={() => setEstado('idle')}
         onSubmit={(e) => e.preventDefault()}
       >
         {/* Datos del cultivo */}
@@ -165,14 +181,17 @@ export function Calculadora({ onGuardar }: Props) {
         <div className="acciones">
           <button
             type="button"
-            className={guardado ? 'btn-guardar ok' : 'btn-guardar'}
-            disabled={!puedeGuardar}
+            className={estado === 'ok' ? 'btn-guardar ok' : 'btn-guardar'}
+            disabled={!puedeGuardar || estado === 'guardando' || estado === 'ok'}
             onClick={guardar}
           >
-            {guardado ? '✓ Guardado en tu registro' : 'Guardar en mi registro'}
+            {etiquetaBoton}
           </button>
           {!puedeGuardar && (
             <span className="ayuda">Escribe el producto y los kilos para poder guardar.</span>
+          )}
+          {estado === 'error' && (
+            <span className="ayuda malo">No se pudo guardar. Revisa tu conexión e intenta otra vez.</span>
           )}
         </div>
       </form>

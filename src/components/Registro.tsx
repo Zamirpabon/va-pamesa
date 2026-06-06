@@ -1,16 +1,23 @@
-import { eliminarCultivo } from '../lib/storage'
 import { formatoCOP, formatoNumero, formatoPorcentaje } from '../lib/format'
-import type { CultivoGuardado } from '../types'
+import type { CultivoRow } from '../types'
+import { Cargando } from './Cargando'
 
 interface Props {
-  registro: CultivoGuardado[]
-  onCambio: (items: CultivoGuardado[]) => void
+  cultivos: CultivoRow[]
+  cargando: boolean
+  error?: string | null
+  onEliminar: (id: string) => Promise<void>
 }
 
-export function Registro({ registro, onCambio }: Props) {
-  if (registro.length === 0) {
+export function Registro({ cultivos, cargando, error, onEliminar }: Props) {
+  if (cargando) return <Cargando texto="Cargando tus cultivos…" />
+
+  const banner = error ? <p className="mensaje malo">{error}</p> : null
+
+  if (cultivos.length === 0) {
     return (
       <div className="vacio">
+        {banner}
         <p className="vacio-emoji" aria-hidden="true">📋</p>
         <h2>Aún no tienes cultivos guardados</h2>
         <p>
@@ -21,10 +28,11 @@ export function Registro({ registro, onCambio }: Props) {
     )
   }
 
-  const totalUtilidad = registro.reduce((a, c) => a + c.utilidad, 0)
+  const totalUtilidad = cultivos.reduce((a, c) => a + c.utilidad, 0)
 
   return (
     <div className="registro">
+      {banner}
       <div className="registro-cabecera">
         <h2>Mi registro de cultivos</h2>
         <p>
@@ -50,14 +58,14 @@ export function Registro({ registro, onCambio }: Props) {
             </tr>
           </thead>
           <tbody>
-            {registro.map((c) => (
+            {cultivos.map((c) => (
               <tr key={c.id}>
                 <td data-label="Cultivo">
                   <span className={`punto nivel-${c.nivel}`} aria-hidden="true" /> {c.producto}
                 </td>
                 <td data-label="Producción">{formatoNumero(c.kilos)} kg</td>
-                <td data-label="Costo total">{formatoCOP(c.costoTotal)}</td>
-                <td data-label="Precio/kg">{formatoCOP(c.precioVentaKg)}</td>
+                <td data-label="Costo total">{formatoCOP(c.costo_total)}</td>
+                <td data-label="Precio/kg">{formatoCOP(c.precio_venta_kg)}</td>
                 <td data-label="Ingresos">{formatoCOP(c.ingresos)}</td>
                 <td data-label="Utilidad" className={c.utilidad >= 0 ? 'bueno' : 'malo'}>
                   {formatoCOP(c.utilidad)}
@@ -69,7 +77,7 @@ export function Registro({ registro, onCambio }: Props) {
                   <button
                     type="button"
                     className="btn-eliminar"
-                    onClick={() => onCambio(eliminarCultivo(c.id))}
+                    onClick={() => onEliminar(c.id)}
                     aria-label={`Eliminar ${c.producto}`}
                   >
                     ✕

@@ -4,6 +4,43 @@ export type NivelRentabilidad = 'alta' | 'media' | 'baja'
 // Grupos de costos, siguiendo la plantilla del productor (Excel ARAC).
 export type CategoriaCosto = 'insumos' | 'mano_obra' | 'otros'
 
+// Rol del usuario.
+export type Rol = 'productor' | 'admin'
+
+// Perfil de un usuario (tabla perfiles).
+export interface Perfil {
+  id: string
+  nombre: string
+  telefono: string | null
+  finca: string | null
+  rol: Rol
+  created_at: string
+}
+
+// Datos de un cultivo (columnas que coinciden 1:1 con la tabla cultivos).
+export interface DatosCultivo {
+  producto: string
+  area_m2: number
+  ciclo_semanas: number
+  unidades: number
+  kilos: number
+  precio_venta_kg: number
+  costos: Record<string, number>
+  costo_total: number
+  ingresos: number
+  utilidad: number
+  margen: number
+  roi: number
+  nivel: NivelRentabilidad
+}
+
+// Una fila de cultivo tal como vive en la base de datos.
+export interface CultivoRow extends DatosCultivo {
+  id: string
+  productor_id: string
+  created_at: string
+}
+
 // Resultado calculado que se muestra en el panel de resumen.
 export interface Resumen {
   kilos: number
@@ -19,18 +56,4 @@ export interface Resumen {
   precioSugerido: number // $/kg para alcanzar el margen objetivo
   nivel: NivelRentabilidad
   rentable: boolean
-}
-
-// Un cultivo guardado en el registro local (localStorage).
-export interface CultivoGuardado {
-  id: string
-  fecha: string // ISO
-  producto: string
-  kilos: number
-  costoTotal: number
-  precioVentaKg: number
-  ingresos: number
-  utilidad: number
-  roi: number
-  nivel: NivelRentabilidad
 }

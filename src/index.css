@@ -742,3 +742,182 @@ input[type='number'] {
 .pie p {
   margin: 0;
 }
+
+/* ── Autenticación ─────────────────────────────────────────── */
+
+.auth {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  background: linear-gradient(160deg, #eaf3e6, #f4f7f1);
+}
+
+.auth-tarjeta {
+  width: 100%;
+  max-width: 420px;
+  background: var(--tarjeta);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  padding: 24px;
+}
+
+.auth-marca {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+}
+
+.auth-marca h1 {
+  font-size: 26px;
+  color: var(--verde-oscuro);
+  letter-spacing: -0.5px;
+}
+
+.auth-sub {
+  text-align: center;
+  color: var(--texto-suave);
+  font-size: 14px;
+  margin: 6px 0 16px;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.auth-form .btn-guardar {
+  margin-top: 4px;
+}
+
+.auth-cambio {
+  text-align: center;
+  font-size: 14px;
+  color: var(--texto-suave);
+  margin: 16px 0 0;
+}
+
+.enlace {
+  background: none;
+  border: none;
+  color: var(--verde);
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.bloque-codigo {
+  background: #1f2a1c;
+  color: #d7e8cf;
+  border-radius: var(--radio-sm);
+  padding: 12px;
+  font-size: 12px;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+/* ── Encabezado con sesión ─────────────────────────────────── */
+
+.encabezado-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+.btn-salir {
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn-salir:hover {
+  background: rgba(255, 255, 255, 0.24);
+}
+
+/* ── Cargando / spinner ────────────────────────────────────── */
+
+.cargando {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 60px 20px;
+  color: var(--texto-suave);
+}
+
+.spinner {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 3px solid var(--borde);
+  border-top-color: var(--verde);
+  animation: girar 0.8s linear infinite;
+}
+
+@keyframes girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.campo-input input:disabled {
+  color: var(--texto-suave);
+  background: #f1f3ee;
+  cursor: not-allowed;
+}
+
+.ayuda.malo {
+  color: var(--rojo);
+}
+
+/* ── Perfil ────────────────────────────────────────────────── */
+
+.perfil {
+  max-width: 560px;
+}
+
+/* ── Dashboard admin ───────────────────────────────────────── */
+
+.admin-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.admin-subtitulo {
+  font-size: 16px;
+  color: var(--verde-oscuro);
+  margin: 0 0 10px;
+}
+
+.etiqueta-admin {
+  display: inline-block;
+  margin-left: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  background: var(--verde-claro);
+  color: var(--verde-oscuro);
+  padding: 2px 6px;
+  border-radius: 6px;
+  vertical-align: middle;
+}
