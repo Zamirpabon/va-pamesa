@@ -6,6 +6,7 @@ type Modo = 'login' | 'registro'
 export function Auth() {
   const { iniciarSesion, registrarse } = useAuth()
   const [modo, setModo] = useState<Modo>('login')
+  const [logoError, setLogoError] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [nombre, setNombre] = useState('')
@@ -52,12 +53,21 @@ export function Auth() {
   return (
     <div className="auth">
       <div className="auth-tarjeta">
-        <div className="auth-marca">
-          <span className="logo" aria-hidden="true">🌱</span>
-          <h1>
-            va<span className="marca-acento">·</span>pa<span className="marca-acento">·</span>mesa
-          </h1>
-        </div>
+        {!logoError ? (
+          <img
+            className="marca-logo"
+            src="/portada.jpg"
+            alt="va·pa·mesa — cultivando decisiones, cosechando ganancias"
+            onError={() => setLogoError(true)}
+          />
+        ) : (
+          <div className="auth-marca">
+            <span className="logo" aria-hidden="true">🌱</span>
+            <h1>
+              va<span className="marca-acento">·</span>pa<span className="marca-acento">·</span>mesa
+            </h1>
+          </div>
+        )}
         <p className="auth-sub">
           {modo === 'login'
             ? 'Entra a tu cuenta para ver tus cultivos.'
@@ -162,6 +172,8 @@ export function Auth() {
             {modo === 'login' ? 'Crear una' : 'Iniciar sesión'}
           </button>
         </p>
+
+        <p className="credito">Desarrollado por <strong>zamge</strong></p>
       </div>
     </div>
   )

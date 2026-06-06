@@ -408,8 +408,20 @@ input[type='number'] {
   border-radius: var(--radio);
   padding: 18px;
   box-shadow: var(--sombra);
-  position: sticky;
-  top: 16px;
+}
+
+.panel-derecho {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+@media (min-width: 900px) {
+  .panel-derecho {
+    position: sticky;
+    top: 16px;
+    align-self: start;
+  }
 }
 
 .resumen-cabecera {
@@ -920,4 +932,215 @@ input[type='number'] {
   padding: 2px 6px;
   border-radius: 6px;
   vertical-align: middle;
+}
+
+/* ── Panel de análisis inteligente ─────────────────────────── */
+
+.analisis {
+  background: var(--tarjeta);
+  border: 1px solid var(--borde);
+  border-left: 5px solid var(--borde);
+  border-radius: var(--radio);
+  padding: 18px;
+  box-shadow: var(--sombra);
+}
+
+.analisis.nivel-exc,
+.analisis.nivel-bien {
+  border-left-color: #43a047;
+}
+.analisis.nivel-medio {
+  border-left-color: var(--amarillo);
+}
+.analisis.nivel-mal {
+  border-left-color: var(--rojo);
+}
+
+.analisis-tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--verde);
+  background: var(--verde-claro);
+  padding: 3px 9px;
+  border-radius: 999px;
+}
+
+.veredicto {
+  margin-top: 12px;
+}
+
+.veredicto h2 {
+  font-size: 20px;
+  color: var(--texto);
+  letter-spacing: -0.3px;
+}
+
+.indice-barra {
+  height: 8px;
+  background: #eef2ea;
+  border-radius: 999px;
+  overflow: hidden;
+  margin: 10px 0 5px;
+}
+
+.indice-barra span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: #43a047;
+  transition: width 0.35s ease;
+}
+
+.nivel-medio .indice-barra span {
+  background: var(--amarillo);
+}
+.nivel-mal .indice-barra span {
+  background: var(--rojo);
+}
+
+.indice-num {
+  font-size: 12px;
+  color: var(--texto-suave);
+}
+
+.analisis-explica {
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--texto);
+  margin: 14px 0;
+}
+
+.mercado-box {
+  background: #f3f6f0;
+  border: 1px solid var(--borde);
+  border-radius: 12px;
+  padding: 10px 14px;
+  margin: 12px 0;
+}
+
+.mercado-fila {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 13.5px;
+}
+
+.mercado-rango {
+  font-size: 12px;
+  color: var(--texto-suave);
+  margin-top: 4px;
+}
+
+.precio-justo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  background: var(--verde-claro);
+  border: 1px solid #cfe6cb;
+  border-radius: 12px;
+  padding: 11px 14px;
+  margin: 12px 0;
+}
+
+.precio-justo span {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--verde-oscuro);
+}
+
+.precio-justo strong {
+  font-size: 18px;
+  color: var(--verde-oscuro);
+}
+
+.razones {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 14px 0;
+}
+
+.razon {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 11px;
+  background: #fbfdfa;
+  border: 1px solid var(--borde);
+  border-radius: 10px;
+}
+
+.razon-et {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--texto-suave);
+}
+
+.razon.tono-bueno .razon-et {
+  color: var(--verde);
+}
+.razon.tono-malo .razon-et {
+  color: var(--rojo);
+}
+
+.razon-de {
+  font-size: 13.5px;
+  line-height: 1.4;
+}
+
+.recos h3 {
+  font-size: 14px;
+  color: var(--verde-oscuro);
+  margin: 6px 0;
+}
+
+.recos ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.recos li {
+  font-size: 13.5px;
+  line-height: 1.45;
+  margin-bottom: 6px;
+}
+
+.fuente {
+  font-size: 11px;
+  color: var(--texto-suave);
+  font-style: italic;
+  margin: 12px 0 0;
+}
+
+/* ── Hero (imagen de la página) ────────────────────────────── */
+
+.marca-logo {
+  display: block;
+  width: 100%;
+  max-width: 230px;
+  height: auto;
+  margin: 0 auto 14px;
+  border-radius: 12px;
+}
+
+/* ── Crédito del desarrollador ─────────────────────────────── */
+
+.credito {
+  font-size: 12px;
+  color: var(--texto-suave);
+  margin-top: 6px;
+  text-align: center;
+}
+
+.credito strong {
+  color: var(--verde-oscuro);
+}
+
+.semaforo.incompleto .semaforo-texto {
+  color: var(--texto-suave);
 }

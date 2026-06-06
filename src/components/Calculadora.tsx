@@ -1,9 +1,11 @@
 import { useMemo, useState } from 'react'
 import { CAMPOS_COSTO, CATEGORIAS } from '../lib/costos'
 import { calcularResumen } from '../lib/calculations'
+import { analizar, type CostoConcepto } from '../lib/analisis'
 import type { DatosCultivo } from '../types'
 import { CampoNumero } from './CampoNumero'
 import { Resumen } from './Resumen'
+import { AnalisisPanel } from './AnalisisPanel'
 
 interface Props {
   // Guarda el cultivo en la base de datos. Lanza si algo falla.
@@ -36,6 +38,19 @@ export function Calculadora({ onGuardar }: Props) {
   const resumen = useMemo(
     () => calcularResumen(listaCostos, kilos, precioVentaKg),
     [listaCostos, kilos, precioVentaKg],
+  )
+
+  const costosDetalle = useMemo<CostoConcepto[]>(
+    () =>
+      modo === 'rapido'
+        ? [{ concepto: 'Costo total', valor: costoRapido }]
+        : CAMPOS_COSTO.map((c) => ({ concepto: c.concepto, valor: costos[c.id] ?? 0 })),
+    [modo, costoRapido, costos],
+  )
+
+  const analisis = useMemo(
+    () => analizar(resumen, costosDetalle, producto),
+    [resumen, costosDetalle, producto],
   )
 
   const setCosto = (id: string, v: number) =>
@@ -196,7 +211,10 @@ export function Calculadora({ onGuardar }: Props) {
         </div>
       </form>
 
-      <Resumen resumen={resumen} producto={producto} />
+      <div className="panel-derecho">
+        <AnalisisPanel analisis={analisis} />
+        <Resumen resumen={resumen} producto={producto} />
+      </div>
     </div>
   )
 }

@@ -71,6 +71,7 @@ function Shell() {
 
       <footer className="pie">
         <p>Hecho para el campo 🇨🇴 · Tus cultivos se guardan en tu cuenta.</p>
+        <p className="credito">Desarrollado por <strong>zamge</strong></p>
       </footer>
     </div>
   )

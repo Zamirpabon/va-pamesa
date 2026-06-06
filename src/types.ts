@@ -57,3 +57,35 @@ export interface Resumen {
   nivel: NivelRentabilidad
   rentable: boolean
 }
+
+// ── Análisis inteligente ───────────────────────────────────
+
+export type Veredicto = 'excelente' | 'rentable' | 'ajustado' | 'perdida' | 'incompleto'
+
+export interface RazonAnalisis {
+  etiqueta: string
+  detalle: string
+  tono: 'bueno' | 'neutro' | 'malo'
+}
+
+export interface MercadoInfo {
+  encontrado: boolean
+  nombre: string | null
+  precioRefKg: number | null
+  precioRefMin: number | null
+  precioRefMax: number | null
+  posicion: 'arriba' | 'enlinea' | 'abajo' | null
+  difPorcentaje: number | null // % del precio de venta vs. la referencia
+}
+
+export interface Analisis {
+  veredicto: Veredicto
+  titulo: string
+  indice: number // 0–100 (índice de rentabilidad)
+  explicacion: string
+  razones: RazonAnalisis[]
+  precioJustoMin: number
+  precioJustoMax: number
+  mercado: MercadoInfo
+  recomendaciones: string[]
+}
