@@ -5,7 +5,7 @@ export function ConfigFaltante() {
       <div className="auth-tarjeta">
         <div className="auth-marca">
           <span className="logo" aria-hidden="true">🌱</span>
-          <h1>va·pa·mesa</h1>
+          <h1>ARAC</h1>
         </div>
         <p className="mensaje medio" style={{ marginTop: 12 }}>
           ⚙️ Falta conectar la base de datos.

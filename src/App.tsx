@@ -36,9 +36,7 @@ function Shell() {
           <div className="marca">
             <Logo className="logo-mini" />
             <div>
-              <h1>
-                va<span className="marca-acento">·</span>pa<span className="marca-acento">·</span>mesa
-              </h1>
+              <h1>ARAC</h1>
               <p>Hola{perfil?.nombre ? `, ${perfil.nombre}` : ''} 👋</p>
             </div>
           </div>
