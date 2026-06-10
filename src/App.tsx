@@ -38,11 +38,15 @@ function Shell() {
             <Logo className="logo-mini" />
             <div>
               <h1>ARAC</h1>
-              <p>Hola{perfil?.nombre ? `, ${perfil.nombre}` : ''} 👋</p>
+              <p className="marca-tag">Calculadora agrícola</p>
             </div>
           </div>
           <div className="encabezado-acciones">
-            <Avatar foto={perfil?.foto} nombre={perfil?.nombre} size={38} />
+            <div className="greet">
+              <span className="hi">Hola</span>
+              <span className="who">{perfil?.nombre || 'Productor'}</span>
+            </div>
+            <Avatar foto={perfil?.foto} nombre={perfil?.nombre} size={40} />
             <button type="button" className="btn-salir" onClick={cerrarSesion}>
               <svg
                 width="16"

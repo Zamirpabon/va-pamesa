@@ -1,4 +1,6 @@
-// Muestra la foto de perfil; si no hay, muestra la inicial del nombre.
+import { useEffect, useState } from 'react'
+
+// Muestra la foto de perfil; si no hay (o la URL falla), muestra la inicial.
 export function Avatar({
   foto,
   nombre,
@@ -10,11 +12,22 @@ export function Avatar({
   size?: number
   className?: string
 }) {
+  const [error, setError] = useState(false)
+  useEffect(() => setError(false), [foto])
+
   const estilo = { width: size, height: size }
   const clase = `avatar ${className}`.trim()
 
-  if (foto) {
-    return <img className={clase} style={estilo} src={foto} alt={nombre || 'Foto de perfil'} />
+  if (foto && !error) {
+    return (
+      <img
+        className={clase}
+        style={estilo}
+        src={foto}
+        alt={nombre || 'Foto de perfil'}
+        onError={() => setError(true)}
+      />
+    )
   }
 
   const inicial = (nombre?.trim()?.[0] || '?').toUpperCase()

@@ -7,10 +7,13 @@
 -- 1) Columna para la URL de la foto en el perfil
 alter table public.perfiles add column if not exists foto text;
 
--- 2) Bucket público de avatares
-insert into storage.buckets (id, name, public)
-values ('avatares', 'avatares', true)
-on conflict (id) do nothing;
+-- 2) Bucket público de avatares (máx 3 MB, solo imágenes)
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values ('avatares', 'avatares', true, 3145728, array['image/png', 'image/jpeg', 'image/webp'])
+on conflict (id) do update
+  set public = true,
+      file_size_limit = excluded.file_size_limit,
+      allowed_mime_types = excluded.allowed_mime_types;
 
 -- 3) Políticas del bucket -------------------------------------
 -- Cualquiera puede VER los avatares (bucket público).

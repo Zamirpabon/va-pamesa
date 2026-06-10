@@ -1,23 +1,17 @@
 import type { Resumen as ResumenT } from '../types'
 import { formatoCOP, formatoNumero, formatoPorcentaje } from '../lib/format'
-import { Semaforo } from './Semaforo'
 
 interface Props {
   resumen: ResumenT
-  producto: string
 }
 
-export function Resumen({ resumen, producto }: Props) {
+export function Resumen({ resumen }: Props) {
   const r = resumen
 
   return (
     <aside className="resumen">
       <div className="resumen-cabecera">
-        <h2>Números{producto ? ` · ${producto}` : ''}</h2>
-        <Semaforo
-          nivel={r.nivel}
-          incompleto={r.kilos <= 0 || r.precioVentaKg <= 0 || r.costoTotal <= 0}
-        />
+        <h2>Indicadores</h2>
       </div>
 
       <div className="metricas">

@@ -13,28 +13,11 @@ const CLASE: Record<Veredicto, string> = {
 export function AnalisisPanel({ analisis }: { analisis: Analisis }) {
   const a = analisis
 
-  if (a.veredicto === 'incompleto') {
-    return (
-      <aside className="analisis nivel-neutro">
-        <span className="analisis-tag">Análisis</span>
-        <p className="analisis-explica">{a.explicacion}</p>
-      </aside>
-    )
-  }
+  if (a.veredicto === 'incompleto') return null
 
   return (
     <aside className={`analisis nivel-${CLASE[a.veredicto]}`}>
-      <span className="analisis-tag">Análisis inteligente</span>
-
-      <div className="veredicto">
-        <h2>{a.titulo}</h2>
-        <div className="indice-barra">
-          <span style={{ width: `${a.indice}%` }} />
-        </div>
-        <span className="indice-num">
-          Índice de rentabilidad: <strong>{a.indice}/100</strong>
-        </span>
-      </div>
+      <span className="analisis-tag">Análisis y consejos</span>
 
       <p className="analisis-explica">{a.explicacion}</p>
 

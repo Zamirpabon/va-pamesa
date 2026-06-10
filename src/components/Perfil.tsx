@@ -12,6 +12,7 @@ export function Perfil() {
   const [telefono, setTelefono] = useState(perfil?.telefono ?? '')
   const [estado, setEstado] = useState<Estado>('idle')
   const [foto, setFoto] = useState<'idle' | 'subiendo' | 'error'>('idle')
+  const [fotoMsg, setFotoMsg] = useState('')
 
   useEffect(() => {
     setNombre(perfil?.nombre ?? '')
@@ -41,6 +42,16 @@ export function Perfil() {
     const file = e.target.files?.[0]
     e.target.value = '' // permite volver a elegir el mismo archivo
     if (!file) return
+    if (!file.type.startsWith('image/')) {
+      setFoto('error')
+      setFotoMsg('El archivo debe ser una imagen (PNG, JPG o WEBP).')
+      return
+    }
+    if (file.size > 3 * 1024 * 1024) {
+      setFoto('error')
+      setFotoMsg('La imagen es muy pesada (máximo 3 MB).')
+      return
+    }
     setFoto('subiendo')
     try {
       const url = await subirAvatar(perfil.id, file)
@@ -49,6 +60,7 @@ export function Perfil() {
       setFoto('idle')
     } catch {
       setFoto('error')
+      setFotoMsg('No se pudo subir la foto. Intenta otra vez.')
     }
   }
 
@@ -69,9 +81,7 @@ export function Perfil() {
           </label>
           <h2>{perfil.nombre || 'Mi perfil'}</h2>
           {perfil.rol === 'admin' && <span className="badge-rol">Administrador</span>}
-          {foto === 'error' && (
-            <span className="ayuda malo">No se pudo subir la foto. Intenta otra vez.</span>
-          )}
+          {foto === 'error' && <span className="ayuda malo">{fotoMsg}</span>}
         </div>
 
         <form className="formulario" onChange={() => setEstado('idle')} onSubmit={guardar}>

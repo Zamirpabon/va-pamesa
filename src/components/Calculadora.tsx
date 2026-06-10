@@ -7,6 +7,8 @@ import { CampoNumero } from './CampoNumero'
 import { Resumen } from './Resumen'
 import { AnalisisPanel } from './AnalisisPanel'
 import { PreciosReferencia } from './PreciosReferencia'
+import { VerdictoHero } from './VerdictoHero'
+import { DesgloseCostos } from './DesgloseCostos'
 
 interface Props {
   // Guarda el cultivo en la base de datos. Lanza si algo falla.
@@ -53,6 +55,21 @@ export function Calculadora({ onGuardar }: Props) {
     () => analizar(resumen, costosDetalle, producto),
     [resumen, costosDetalle, producto],
   )
+
+  // Costos agrupados por categoría (para el desglose). En modo rápido no aplica.
+  const grupos = useMemo(() => {
+    if (modo === 'rapido') return { insumos: 0, mano: 0, otros: 0 }
+    let insumos = 0
+    let mano = 0
+    let otros = 0
+    for (const c of CAMPOS_COSTO) {
+      const v = costos[c.id] ?? 0
+      if (c.categoria === 'insumos') insumos += v
+      else if (c.categoria === 'mano_obra') mano += v
+      else otros += v
+    }
+    return { insumos, mano, otros }
+  }, [modo, costos])
 
   const setCosto = (id: string, v: number) =>
     setCostos((prev) => ({ ...prev, [id]: v }))
@@ -213,8 +230,10 @@ export function Calculadora({ onGuardar }: Props) {
       </form>
 
       <div className="panel-derecho">
+        <VerdictoHero resumen={resumen} analisis={analisis} />
+        <Resumen resumen={resumen} />
+        <DesgloseCostos insumos={grupos.insumos} mano={grupos.mano} otros={grupos.otros} />
         <AnalisisPanel analisis={analisis} />
-        <Resumen resumen={resumen} producto={producto} />
         <PreciosReferencia />
       </div>
     </div>
