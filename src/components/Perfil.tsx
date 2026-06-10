@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useAuth } from '../auth/AuthProvider'
-import { actualizarPerfil } from '../lib/db'
+import { actualizarPerfil, guardarFotoPerfil, subirAvatar } from '../lib/db'
+import { Avatar } from './Avatar'
 
 type Estado = 'idle' | 'guardando' | 'ok' | 'error'
 
@@ -10,9 +11,8 @@ export function Perfil() {
   const [finca, setFinca] = useState(perfil?.finca ?? '')
   const [telefono, setTelefono] = useState(perfil?.telefono ?? '')
   const [estado, setEstado] = useState<Estado>('idle')
+  const [foto, setFoto] = useState<'idle' | 'subiendo' | 'error'>('idle')
 
-  // Re-sincroniza el formulario cuando cambia el perfil del contexto
-  // (p. ej. tras guardar y volver a leerlo de la base de datos).
   useEffect(() => {
     setNombre(perfil?.nombre ?? '')
     setFinca(perfil?.finca ?? '')
@@ -37,10 +37,42 @@ export function Perfil() {
     }
   }
 
+  const cambiarFoto = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    e.target.value = '' // permite volver a elegir el mismo archivo
+    if (!file) return
+    setFoto('subiendo')
+    try {
+      const url = await subirAvatar(perfil.id, file)
+      await guardarFotoPerfil(perfil.id, url)
+      await refrescarPerfil()
+      setFoto('idle')
+    } catch {
+      setFoto('error')
+    }
+  }
+
   return (
     <div className="perfil">
-      <div className="bloque">
-        <h2 className="bloque-titulo">Mi perfil</h2>
+      <div className="bloque perfil-card">
+        <div className="perfil-cabecera">
+          <Avatar foto={perfil.foto} nombre={perfil.nombre} size={104} className="avatar-grande" />
+          <label className="btn-foto">
+            {foto === 'subiendo' ? 'Subiendo…' : 'Cambiar foto'}
+            <input
+              type="file"
+              accept="image/*"
+              hidden
+              onChange={cambiarFoto}
+              disabled={foto === 'subiendo'}
+            />
+          </label>
+          <h2>{perfil.nombre || 'Mi perfil'}</h2>
+          {perfil.rol === 'admin' && <span className="badge-rol">Administrador</span>}
+          {foto === 'error' && (
+            <span className="ayuda malo">No se pudo subir la foto. Intenta otra vez.</span>
+          )}
+        </div>
 
         <form className="formulario" onChange={() => setEstado('idle')} onSubmit={guardar}>
           <label className="campo">
@@ -71,10 +103,6 @@ export function Perfil() {
               </div>
             </label>
           </div>
-
-          {perfil.rol === 'admin' && (
-            <p className="ayuda">Tu cuenta es de tipo <strong>administrador</strong>.</p>
-          )}
 
           <div className="acciones">
             <button

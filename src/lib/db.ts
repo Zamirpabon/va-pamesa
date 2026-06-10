@@ -33,6 +33,30 @@ export async function actualizarPerfil(
   return data as Perfil
 }
 
+// Sube la foto de perfil al bucket "avatares" (carpeta = id del usuario) y
+// devuelve la URL pública (con cache-bust para que se vea al instante).
+export async function subirAvatar(userId: string, file: File): Promise<string> {
+  const ruta = `${userId}/avatar`
+  const { error } = await cli()
+    .storage.from('avatares')
+    .upload(ruta, file, { upsert: true, cacheControl: '3600', contentType: file.type })
+  if (error) throw error
+  const { data } = cli().storage.from('avatares').getPublicUrl(ruta)
+  return `${data.publicUrl}?t=${Date.now()}`
+}
+
+// Guarda la URL de la foto en el perfil del usuario.
+export async function guardarFotoPerfil(userId: string, foto: string): Promise<Perfil> {
+  const { data, error } = await cli()
+    .from('perfiles')
+    .update({ foto })
+    .eq('id', userId)
+    .select('*')
+    .single()
+  if (error) throw error
+  return data as Perfil
+}
+
 // ── Cultivos del productor ─────────────────────────────────
 
 export async function listarMisCultivos(userId: string): Promise<CultivoRow[]> {

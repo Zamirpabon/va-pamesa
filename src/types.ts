@@ -13,6 +13,7 @@ export interface Perfil {
   nombre: string
   telefono: string | null
   finca: string | null
+  foto: string | null
   rol: Rol
   created_at: string
 }

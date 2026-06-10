@@ -15,7 +15,7 @@ export function Logo({ className }: { className?: string }) {
   return (
     <img
       className={className}
-      src="/portada.jpg"
+      src="/ARAC.jpg"
       alt="ARAC"
       onError={() => setError(true)}
     />
