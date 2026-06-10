@@ -6,6 +6,7 @@ import type { DatosCultivo } from '../types'
 import { CampoNumero } from './CampoNumero'
 import { Resumen } from './Resumen'
 import { AnalisisPanel } from './AnalisisPanel'
+import { PreciosReferencia } from './PreciosReferencia'
 
 interface Props {
   // Guarda el cultivo en la base de datos. Lanza si algo falla.
@@ -114,7 +115,7 @@ export function Calculadora({ onGuardar }: Props) {
           </label>
 
           <div className="grid-2">
-            <CampoNumero etiqueta="Peso cosechado" valor={kilos} onChange={setKilos} sufijo="kg" />
+            <CampoNumero etiqueta="Peso cosechado" valor={kilos} onChange={setKilos} sufijo="kg" decimales />
             <CampoNumero
               etiqueta="Precio de venta"
               valor={precioVentaKg}
@@ -127,7 +128,7 @@ export function Calculadora({ onGuardar }: Props) {
           <details className="opcionales">
             <summary>Datos adicionales (opcional)</summary>
             <div className="grid-2">
-              <CampoNumero etiqueta="Área" valor={areaM2} onChange={setAreaM2} sufijo="m²" />
+              <CampoNumero etiqueta="Área" valor={areaM2} onChange={setAreaM2} sufijo="m²" decimales />
               <CampoNumero
                 etiqueta="Ciclo"
                 valor={cicloSemanas}
@@ -214,6 +215,7 @@ export function Calculadora({ onGuardar }: Props) {
       <div className="panel-derecho">
         <AnalisisPanel analisis={analisis} />
         <Resumen resumen={resumen} producto={producto} />
+        <PreciosReferencia />
       </div>
     </div>
   )

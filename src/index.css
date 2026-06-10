@@ -1141,6 +1141,124 @@ input[type='number'] {
   color: var(--verde-oscuro);
 }
 
+/* ── Logo mini (encabezado) ────────────────────────────────── */
+
+.logo-mini {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #fff;
+  font-size: 30px;
+  line-height: 46px;
+  text-align: center;
+  display: inline-block;
+  flex-shrink: 0;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
+}
+
+/* ── Tarjeta de precios de referencia ──────────────────────── */
+
+.precios-ref {
+  background: var(--tarjeta);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  padding: 16px 18px;
+  box-shadow: var(--sombra);
+}
+
+.precios-ref h3 {
+  font-size: 15px;
+  color: var(--verde-oscuro);
+  margin-bottom: 10px;
+}
+
+.precios-ref ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.precios-ref li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  padding: 7px 0;
+  border-top: 1px solid var(--borde);
+  font-size: 13.5px;
+}
+
+.precios-ref li:first-child {
+  border-top: none;
+}
+
+.pr-nombre {
+  color: var(--texto);
+  font-weight: 600;
+}
+
+.pr-precio {
+  color: var(--texto-suave);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Responsive: pestañas deslizables y ajustes móviles ─────── */
+
+.tabs {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.tab {
+  flex-shrink: 0;
+}
+
+@media (max-width: 560px) {
+  .marca h1 {
+    font-size: 22px;
+  }
+  .marca p {
+    font-size: 12px;
+  }
+  .logo-mini {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 26px;
+  }
+  .btn-salir {
+    padding: 7px 11px;
+    font-size: 12px;
+  }
+  .contenido {
+    padding: 16px 12px 32px;
+  }
+  .bloque,
+  .resumen,
+  .analisis {
+    padding: 15px;
+  }
+  .encabezado {
+    padding: 14px 12px;
+  }
+  .metrica-valor {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 380px) {
+  .marca p {
+    display: none;
+  }
+}
+
 .semaforo.incompleto .semaforo-texto {
   color: var(--texto-suave);
 }

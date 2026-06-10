@@ -9,6 +9,7 @@ import { Calculadora } from './components/Calculadora'
 import { Registro } from './components/Registro'
 import { Perfil } from './components/Perfil'
 import { AdminDashboard } from './components/AdminDashboard'
+import { Logo } from './components/Logo'
 
 type Seccion = 'calculadora' | 'registro' | 'perfil' | 'admin'
 
@@ -33,7 +34,7 @@ function Shell() {
       <header className="encabezado">
         <div className="encabezado-top">
           <div className="marca">
-            <span className="logo" aria-hidden="true">🌱</span>
+            <Logo className="logo-mini" />
             <div>
               <h1>
                 va<span className="marca-acento">·</span>pa<span className="marca-acento">·</span>mesa
