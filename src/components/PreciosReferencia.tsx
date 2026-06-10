@@ -19,8 +19,11 @@ export function PreciosReferencia() {
   const items = REFERENCIAS.filter((r) => DESTACADOS.includes(r.nombre))
 
   return (
-    <aside className="precios-ref">
-      <h3>Precios de referencia del mercado</h3>
+    <details className="precios-ref">
+      <summary>
+        <span>Precios de referencia del mercado</span>
+        <span className="pr-chevron" aria-hidden="true">▾</span>
+      </summary>
       <ul>
         {items.map((r) => (
           <li key={r.nombre}>
@@ -32,6 +35,6 @@ export function PreciosReferencia() {
         ))}
       </ul>
       <p className="fuente">{FUENTE_MERCADO}</p>
-    </aside>
+    </details>
   )
 }
